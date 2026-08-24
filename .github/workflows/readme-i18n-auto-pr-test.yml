@@ -1,0 +1,64 @@
+name: README i18n auto PR test
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  generate-and-open-pr:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      DEEPL_AUTH_KEY: ${{ secrets.DEEPL_AUTH_KEY }}
+      GH_TOKEN: ${{ github.token }}
+      BASE_BRANCH: i18n-workflow-test
+      TEST_BRANCH: i18n-generated-test-${{ github.run_id }}
+    steps:
+      - name: Check out test branch
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: i18n-workflow-test
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Require DeepL secret
+        shell: bash
+        run: test -n "$DEEPL_AUTH_KEY"
+
+      - name: Generate full README translations
+        shell: bash
+        run: >-
+          python3 scripts/i18n/sync_readme_i18n.py
+          --source README.md
+          --output-dir docs/i18n
+          --cache-dir .spike/deepl-cache
+          --provider deepl
+          --locales zh-CN ja ko es fr
+
+      - name: Upload generated translations
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: readme-i18n-full-${{ github.run_id }}
+          path: docs/i18n
+          if-no-files-found: error
+          retention-days: 3
+
+      - name: Create draft PR in the fork
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "$TEST_BRANCH"
+          git add docs/i18n
+          git commit -m "test: generate README translations"
+          git push --set-upstream origin "$TEST_BRANCH"
+          gh pr create \
+            --repo "$GITHUB_REPOSITORY" \
+            --base "$BASE_BRANCH" \
+            --head "$TEST_BRANCH" \
+            --draft \
+            --title "test: generated README translations" \
+            --body "Temporary validation PR. It verifies full DeepL README generation and the automated PR workflow."
