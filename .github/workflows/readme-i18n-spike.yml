@@ -74,10 +74,10 @@ jobs:
           --locales zh-CN ja ko es fr
 
       - name: Upload DeepL smoke output
-        if: env.DEEPL_AUTH_KEY != ''
+        if: always() && env.DEEPL_AUTH_KEY != ''
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: readme-i18n-deepl-smoke
           path: .spike/deepl
-          if-no-files-found: error
+          if-no-files-found: ignore
           retention-days: 3

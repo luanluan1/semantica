@@ -303,9 +303,9 @@ def main(argv=None):
         else:
             cache = {}
         translated, updated_cache = synchronize(source, locale, translator, cache)
-        assert_protected_structure(source, translated)
         output_path = args.output_dir / f"README.{locale}.md"
         output_path.write_text(header + translated, encoding="utf-8", newline="")
+        assert_protected_structure(source, translated)
         cache_path.write_text(
             json.dumps(updated_cache, ensure_ascii=False, indent=2, sort_keys=True)
             + "\n",
