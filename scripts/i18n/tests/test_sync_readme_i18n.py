@@ -20,7 +20,8 @@ SAMPLE_README = """<div align="center">
 
 # Semantica
 
-Build a context graph with **traceable decisions** and `pip install semantica`.
+    Build a context graph with **traceable decisions** and `pip install semantica`.
+    Support RDF & LPG data models.
 
 [Read the guide](docs/guide.md) or visit https://example.com/docs.
 
@@ -97,6 +98,7 @@ class SynchronizeTests(unittest.TestCase):
 
         self.assertIn("构建上下文图", result)
         self.assertIn("**可追溯决策**", result)
+        self.assertIn("Support RDF & LPG data models.", result)
         self.assertIn("`pip install semantica`", result)
         self.assertIn("[阅读指南](docs/guide.md)", result)
         self.assertIn("https://example.com/docs", result)
