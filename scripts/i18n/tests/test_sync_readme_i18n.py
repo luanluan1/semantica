@@ -117,6 +117,13 @@ class SynchronizeTests(unittest.TestCase):
         self.assertEqual(dense, result)
         self.assertEqual([], translator.calls)
 
+    def test_external_link_rows_are_kept_verbatim(self):
+        linked = "Read the [online guide](https://example.com/guide)."
+        translator = RecordingTranslator(lambda text, locale: "translated")
+        result, _ = synchronize(linked, "zh-CN", translator, {})
+        self.assertEqual(linked, result)
+        self.assertEqual([], translator.calls)
+
     def test_protection_tokens_have_content_for_xml_translation(self):
         translator = XmlExpandingTranslator()
 
