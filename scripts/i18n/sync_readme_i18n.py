@@ -109,7 +109,11 @@ def _protect_inline(text):
         protected.append((marker, match.group(0)))
         return token
 
-    return _PROTECTED_INLINE.sub(replace, text), protected
+    text = _PROTECTED_INLINE.sub(replace, text)
+    # DeepL's XML mode rejects bare ampersands. Existing HTML entities are
+    # already protected above; escape only literal ampersands in prose.
+    text = re.sub(r"&(?![A-Za-z0-9#]+;)", "&amp;", text)
+    return text, protected
 
 
 def _restore_inline(text, protected):
@@ -117,6 +121,7 @@ def _restore_inline(text, protected):
         r'<keep\b[^>]*>\s*codex_keep_\d+\s*</keep\s*>'
     )
     text = re.sub(rf'`+(?P<tag>{keep_tag})`+', r'\g<tag>', text)
+    text = text.replace("&amp;", "&")
     for marker, original in protected:
         tag = re.compile(
             rf'<keep\b[^>]*>\s*{re.escape(marker)}\s*</keep\s*>',
