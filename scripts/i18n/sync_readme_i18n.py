@@ -38,6 +38,7 @@ _PROTECTED_INLINE = re.compile(
 )
 _LINK_START = re.compile(r"\]\(")
 _EXTERNAL_LINK = re.compile(r"\]\(\s*https?://", re.IGNORECASE)
+_INLINE_CODE = re.compile(r"`+[^`\n]*`+")
 
 
 class DeepLTranslator:
@@ -206,6 +207,10 @@ def synchronize(source, locale, translator, cache):
             # lines. Preserve those lines verbatim; relative repository links
             # remain translatable and are still structurally validated.
             and not _EXTERNAL_LINK.search(stripped)
+            # Providers may reorder multiple code placeholders in a single
+            # sentence. Preserve those lines rather than risking broken
+            # examples; single-code lines remain translatable.
+            and len(_INLINE_CODE.findall(stripped)) < 2
         )
         if not should_translate:
             output.append(line)
