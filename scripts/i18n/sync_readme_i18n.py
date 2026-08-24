@@ -79,7 +79,9 @@ class MarkerTranslator:
     """Visible, deterministic provider for testing without an external API."""
 
     def translate(self, text, locale):
-        parts = re.split(r'(<keep id="p\d+"></keep>)', text)
+        parts = re.split(
+            r'(<keep id="p\d+">codex_keep_\d+</keep>)', text
+        )
         for index, part in enumerate(parts):
             if not part.startswith("<keep ") and re.search(r"[A-Za-z]", part):
                 parts[index] = re.sub(
