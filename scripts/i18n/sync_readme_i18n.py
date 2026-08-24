@@ -36,6 +36,7 @@ _PROTECTED_INLINE = re.compile(
     # can break links and tables.
     r"|\*\*|__|~~"
 )
+_LINK_START = re.compile(r"\]\(")
 
 
 class DeepLTranslator:
@@ -196,6 +197,10 @@ def synchronize(source, locale, translator, cache):
             and not re.fullmatch(r"[-*_]{3,}", stripped)
             and not _PURE_HTML.fullmatch(stripped)
             and bool(re.search(r"[A-Za-z]", stripped))
+            # Badge/navigation rows contain many independent links. Keeping
+            # these presentation-only rows verbatim avoids provider
+            # reordering of a large group of XML placeholders.
+            and len(_LINK_START.findall(stripped)) < 4
         )
         if not should_translate:
             output.append(line)
