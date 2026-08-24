@@ -38,6 +38,7 @@ _PROTECTED_INLINE = re.compile(
 )
 _LINK_START = re.compile(r"\]\(")
 _EXTERNAL_LINK = re.compile(r"\]\(\s*https?://", re.IGNORECASE)
+_ANCHOR_LINK = re.compile(r"\]\(\s*#", re.IGNORECASE)
 _INLINE_CODE = re.compile(r"`+[^`\n]*`+")
 
 
@@ -207,6 +208,9 @@ def synchronize(source, locale, translator, cache):
             # lines. Preserve those lines verbatim; relative repository links
             # remain translatable and are still structurally validated.
             and not _EXTERNAL_LINK.search(stripped)
+            # Section-navigation anchors are presentation links; preserving
+            # these rows avoids provider reordering of anchor placeholders.
+            and not _ANCHOR_LINK.search(stripped)
             # Providers may reorder multiple code placeholders in a single
             # sentence. Preserve those lines rather than risking broken
             # examples; single-code lines remain translatable.
