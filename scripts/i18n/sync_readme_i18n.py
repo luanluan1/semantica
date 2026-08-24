@@ -283,6 +283,13 @@ def assert_protected_structure(source, translated):
         raise ValueError("Protected Markdown changed: line count")
     for label, before, after in checks:
         if before != after:
+            if isinstance(before, list) and isinstance(after, list):
+                for index, (expected, actual) in enumerate(zip(before, after)):
+                    if expected != actual:
+                        raise ValueError(
+                            f"Protected Markdown changed: {label} at index {index}: "
+                            f"expected={expected!r} actual={actual!r}"
+                        )
             raise ValueError(f"Protected Markdown changed: {label}")
 
 
