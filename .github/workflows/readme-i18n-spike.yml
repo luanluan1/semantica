@@ -1,0 +1,83 @@
+name: README i18n spike
+
+on:
+  push:
+    branches:
+      - i18n-workflow-test
+    paths:
+      - README.md
+      - scripts/i18n/**
+      - .github/workflows/readme-i18n-spike.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: readme-i18n-spike-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  structure-and-cache:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out test branch
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+
+      - name: Run synchronization tests
+        run: python3 -m unittest discover -s scripts/i18n/tests -v
+
+      - name: Generate marker translations from the complete README
+        run: >-
+          python3 scripts/i18n/sync_readme_i18n.py
+          --source README.md
+          --output-dir .spike/generated
+          --cache-dir .spike/cache
+          --provider marker
+          --locales zh-CN ja ko es fr
+
+      - name: Upload structure-only output
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: readme-i18n-marker-output
+          path: .spike/generated
+          if-no-files-found: error
+          retention-days: 3
+
+  deepl-smoke:
+    needs: structure-and-cache
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      DEEPL_AUTH_KEY: ${{ secrets.DEEPL_AUTH_KEY }}
+    steps:
+      - name: Check out test branch
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+
+      - name: Skip until a new key is configured
+        if: env.DEEPL_AUTH_KEY == ''
+        run: echo "DEEPL_AUTH_KEY is not configured; the real API smoke test was skipped."
+
+      - name: Translate a small representative fixture
+        if: env.DEEPL_AUTH_KEY != ''
+        run: >-
+          python3 scripts/i18n/sync_readme_i18n.py
+          --source scripts/i18n/tests/fixtures/deepl-smoke.md
+          --output-dir .spike/deepl
+          --cache-dir .spike/deepl-cache
+          --provider deepl
+          --locales zh-CN ja ko es fr
+
+      - name: Upload DeepL smoke output
+        if: env.DEEPL_AUTH_KEY != ''
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: readme-i18n-deepl-smoke
+          path: .spike/deepl
+          if-no-files-found: error
+          retention-days: 3
