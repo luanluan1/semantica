@@ -124,6 +124,13 @@ class SynchronizeTests(unittest.TestCase):
         self.assertEqual(linked, result)
         self.assertEqual([], translator.calls)
 
+    def test_multiple_inline_code_rows_are_kept_verbatim(self):
+        linked = "Use `first()` rather than `second()` here."
+        translator = RecordingTranslator(lambda text, locale: "translated")
+        result, _ = synchronize(linked, "zh-CN", translator, {})
+        self.assertEqual(linked, result)
+        self.assertEqual([], translator.calls)
+
     def test_protection_tokens_have_content_for_xml_translation(self):
         translator = XmlExpandingTranslator()
 
