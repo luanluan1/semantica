@@ -37,6 +37,7 @@ _PROTECTED_INLINE = re.compile(
     r"|\*\*|__|~~"
 )
 _LINK_START = re.compile(r"\]\(")
+_EXTERNAL_LINK = re.compile(r"\]\(\s*https?://", re.IGNORECASE)
 
 
 class DeepLTranslator:
@@ -201,6 +202,10 @@ def synchronize(source, locale, translator, cache):
             # these presentation-only rows verbatim avoids provider
             # reordering of a large group of XML placeholders.
             and len(_LINK_START.findall(stripped)) < 4
+            # DeepL can rewrite external URL placeholders in long README
+            # lines. Preserve those lines verbatim; relative repository links
+            # remain translatable and are still structurally validated.
+            and not _EXTERNAL_LINK.search(stripped)
         )
         if not should_translate:
             output.append(line)
