@@ -110,6 +110,13 @@ class SynchronizeTests(unittest.TestCase):
         self.assertIn('message = "Do not translate this string"', result)
         self.assertIn("| 功能 | 说明 |", result)
 
+    def test_dense_badge_rows_are_kept_verbatim(self):
+        dense = "[One](one) [Two](two) [Three](three) [Four](four)"
+        translator = RecordingTranslator(lambda text, locale: "translated")
+        result, _ = synchronize(dense, "zh-CN", translator, {})
+        self.assertEqual(dense, result)
+        self.assertEqual([], translator.calls)
+
     def test_protection_tokens_have_content_for_xml_translation(self):
         translator = XmlExpandingTranslator()
 
