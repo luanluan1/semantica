@@ -31,7 +31,10 @@ _PROTECTED_INLINE = re.compile(
     r"|<[^>]+>"
     r"|https?://[^\s)>]+"
     r"|&[A-Za-z0-9#]+;"
-    r"|\*\*|__|~~|\||\[|\]"
+    # Keep Markdown delimiters visible to the translator. Protecting each
+    # bracket or pipe separately lets providers reorder the placeholders and
+    # can break links and tables.
+    r"|\*\*|__|~~"
 )
 
 
