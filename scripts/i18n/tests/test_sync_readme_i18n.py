@@ -52,6 +52,14 @@ class RecordingTranslator:
         return self.transform(text, locale)
 
 
+class XmlExpandingTranslator(RecordingTranslator):
+    def translate(self, text, locale):
+        translated = super().translate(text, locale)
+        return translated.replace(
+            '<keep id="p0"></keep>', '<keep id="p0">codex_keep_0</keep>'
+        )
+
+
 class SynchronizeTests(unittest.TestCase):
     def test_identity_translation_round_trips_markdown_byte_for_byte(self):
         translator = RecordingTranslator()
@@ -89,6 +97,15 @@ class SynchronizeTests(unittest.TestCase):
         )
         self.assertIn('message = "Do not translate this string"', result)
         self.assertIn("| 功能 | 说明 |", result)
+
+    def test_protection_tokens_have_content_for_xml_translation(self):
+        translator = XmlExpandingTranslator()
+
+        result, _ = synchronize(SAMPLE_README, "zh-CN", translator, {})
+
+        self.assertNotIn("<keep", result)
+        self.assertIn("`pip install semantica`", result)
+        self.assertIn('message = "Do not translate this string"', result)
 
     def test_reuses_cached_lines_and_translates_only_changed_prose(self):
         first = RecordingTranslator()

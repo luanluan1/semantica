@@ -99,16 +99,21 @@ def _protect_inline(text):
 
     def replace(match):
         index = len(protected)
-        token = f'<keep id="p{index}"></keep>'
-        protected.append((token, match.group(0)))
+        marker = f"codex_keep_{index}"
+        token = f'<keep id="p{index}">{marker}</keep>'
+        protected.append((marker, match.group(0)))
         return token
 
     return _PROTECTED_INLINE.sub(replace, text), protected
 
 
 def _restore_inline(text, protected):
-    for token, original in protected:
-        text = text.replace(token, original)
+    for marker, original in protected:
+        tag = re.compile(
+            rf'<keep\b[^>]*>\s*{re.escape(marker)}\s*</keep\s*>',
+            re.IGNORECASE,
+        )
+        text = tag.sub(lambda _match: original, text, count=1)
     return text
 
 
