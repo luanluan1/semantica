@@ -56,8 +56,18 @@ class XmlExpandingTranslator(RecordingTranslator):
     def translate(self, text, locale):
         translated = super().translate(text, locale)
         return translated.replace(
-            '<keep id="p0"></keep>', '<keep id="p0">codex_keep_0</keep>'
+            '<keep id="p0">codex_keep_0</keep>',
+            '<keep id="p0">codex_keep_0</keep>',
         )
+
+
+class MarkdownFormattingTranslator(RecordingTranslator):
+    def translate(self, text, locale):
+        translated = super().translate(text, locale)
+        return translated.replace(
+            '<keep id="p0">codex_keep_0</keep>',
+            '`<keep id="p0">codex_keep_0</keep>`',
+        ).replace("](", "] (")
 
 
 class SynchronizeTests(unittest.TestCase):
@@ -106,6 +116,14 @@ class SynchronizeTests(unittest.TestCase):
         self.assertNotIn("<keep", result)
         self.assertIn("`pip install semantica`", result)
         self.assertIn('message = "Do not translate this string"', result)
+
+    def test_removes_provider_markdown_formatting_around_protected_tokens(self):
+        translator = MarkdownFormattingTranslator()
+
+        result, _ = synchronize(SAMPLE_README, "fr", translator, {})
+
+        self.assertIn("`pip install semantica`", result)
+        self.assertIn("[Read the guide](docs/guide.md)", result)
 
     def test_reuses_cached_lines_and_translates_only_changed_prose(self):
         first = RecordingTranslator()

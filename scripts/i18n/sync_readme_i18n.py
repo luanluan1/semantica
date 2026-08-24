@@ -110,12 +110,17 @@ def _protect_inline(text):
 
 
 def _restore_inline(text, protected):
+    keep_tag = (
+        r'<keep\b[^>]*>\s*codex_keep_\d+\s*</keep\s*>'
+    )
+    text = re.sub(rf'`+(?P<tag>{keep_tag})`+', r'\g<tag>', text)
     for marker, original in protected:
         tag = re.compile(
             rf'<keep\b[^>]*>\s*{re.escape(marker)}\s*</keep\s*>',
             re.IGNORECASE,
         )
         text = tag.sub(lambda _match: original, text, count=1)
+    text = re.sub(r'\]\s+\(', '](', text)
     return text
 
 
