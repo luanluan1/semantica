@@ -153,9 +153,12 @@ class QdrantCollection:
             raise ProcessingError("Qdrant not available")
 
         try:
-            search_results = self.client.search(
+            # qdrant-client >=1.10.0: query_points() supersedes the removed search().
+            # It returns a QueryResponse whose .points attribute is a list of
+            # ScoredPoint objects (id, score, payload, …).
+            response = self.client.query_points(
                 collection_name=self.collection_name,
-                query_vector=query_vector.tolist(),
+                query=query_vector.tolist(),
                 limit=limit,
                 query_filter=query_filter,
                 with_payload=True,
@@ -164,19 +167,19 @@ class QdrantCollection:
             )
 
             results = []
-            for result in search_results:
+            for point in response.points:
                 results.append(
                     {
-                        "id": result.id,
+                        "id": point.id,
                         # See pinecone_store.py PineconeIndex.search_vectors for why
                         # this uses x/(1+|x|) rather than clamping distance-to-zero:
                         # Qdrant's Dot distance metric is unbounded, and the old
                         # clamped formula collapsed every score >= 1.0 to 1.0.
                         "score": (
-                            float(result.score) / (1.0 + abs(float(result.score))) + 1.0
+                            float(point.score) / (1.0 + abs(float(point.score))) + 1.0
                         )
                         / 2.0,
-                        "metadata": result.payload or {},
+                        "metadata": point.payload or {},
                         "vector": None,
                         "distance": None,
                     }
@@ -590,19 +593,76 @@ class QdrantStore:
                 with_payload=True,
                 with_vectors=True,
             )
-            results = []
-            for rec in records:
-                results.append(
-                    {
-                        "id": str(rec.id),
-                        "metadata": rec.payload or {},
-                        "vector": np.array(rec.vector) if rec.vector is not None else None,
-                    }
-                )
-            return results
+            return [self._record_to_result(rec) for rec in records]
         except Exception as e:
             self.logger.warning(f"Failed to scroll Qdrant points by metadata filter: {e}")
             return []
+
+    @staticmethod
+    def _record_to_result(rec: Any) -> Dict[str, Any]:
+        return {
+            "id": str(rec.id),
+            "metadata": rec.payload or {},
+            "vector": np.array(rec.vector) if rec.vector is not None else None,
+        }
+
+    def iter_all(self, batch_size: int = 500):
+        """
+        Iterate over every stored point using Qdrant's scroll cursor.
+
+        Paginates by point-ID cursor rather than row offset, which is why this
+        exists instead of scan_vectors(offset, limit). An integer offset is a
+        point ID, not a rank.
+
+        Assumes a single unnamed vector per point, as insert_vectors() and
+        get_vector() already do. Named and multi-vector collections are not
+        handled.
+
+        Args:
+            batch_size: Points to request per scroll call
+
+        Yields:
+            Result dicts with 'id', 'metadata', and 'vector', in scroll order
+
+        Raises:
+            ProcessingError: If the collection or client is not initialized, or
+                if the cursor stops advancing before the scan completes.
+        """
+        if self.collection is None or self.client is None or not QDRANT_AVAILABLE:
+            raise ProcessingError(
+                "Collection not initialized. Call create_collection() or get_collection() first."
+            )
+
+        next_offset = None
+        last_offset = object()
+        while True:
+            records, next_offset = self.client.scroll(
+                collection_name=self.collection.collection_name,
+                limit=batch_size,
+                offset=next_offset,
+                with_payload=True,
+                with_vectors=True,
+            )
+
+            for rec in records:
+                yield self._record_to_result(rec)
+
+            # A final page can carry records alongside a null cursor, so they
+            # are yielded above before stopping. Passing offset=None back to
+            # scroll() would restart from the beginning, not continue.
+            if next_offset is None:
+                return
+
+            # An empty page with a live cursor isn't necessarily truncation —
+            # a batch window that lands entirely on deleted points comes back
+            # this way too, and there's more to scan past it. Only treat it as
+            # stuck if the cursor itself stops moving.
+            if not records and next_offset == last_offset:
+                raise ProcessingError(
+                    "Qdrant scroll cursor stopped advancing without reaching "
+                    "the end of the collection, so the scan cannot complete."
+                )
+            last_offset = next_offset
 
     def delete_vectors(
         self, point_ids: List[Union[str, int]], **options
@@ -638,9 +698,31 @@ class QdrantStore:
             collection_info = self.client.get_collection(
                 self.collection.collection_name
             )
+            # vectors_count was removed in qdrant-client 1.16.0.
+            # When it is absent, only infer the total from points_count if we
+            # can confirm the collection uses a single unnamed vector per point
+            # (VectorParams). Named/multi-vector collections (dict of VectorParams)
+            # have an unknown multiplier, so return None rather than a wrong value.
+            # get_collection() accepts externally-created collections without schema
+            # validation, so the schema must be inspected at stats time.
+            vectors_count_fallback: Optional[int]
+            try:
+                vectors_cfg = collection_info.config.params.vectors
+                vectors_count_fallback = (
+                    collection_info.points_count
+                    if QDRANT_AVAILABLE and isinstance(vectors_cfg, VectorParams)
+                    else None
+                )
+            except Exception:
+                vectors_count_fallback = None
+
             return {
                 "points_count": collection_info.points_count,
-                "vectors_count": collection_info.vectors_count,
+                "vectors_count": getattr(
+                    collection_info,
+                    "vectors_count",
+                    vectors_count_fallback,
+                ),
                 "status": str(collection_info.status)
                 if hasattr(collection_info, "status")
                 else "unknown",
