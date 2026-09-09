@@ -1225,27 +1225,27 @@ MCP setup takes 30 seconds — see [MCP Server](#mcp-server) below.
 <td align="center" width="12.5%">
 <a href="https://windsurf.com"><img src="https://exafunction.github.io/public/brand/windsurf-black-symbol.svg" alt="Windsurf" width="48" height="48" /></a><br/>
 <strong>Windsurf</strong><br/>
-<sub><a href="plugins/.windsurf-plugin/">plugin</a></sub>
+<sub><a href="../../../plugins/.windsurf-plugin/README">plugin</a></sub>
 </td>
 <td align="center" width="12.5%">
 <a href="https://github.com/cline/cline"><img src="https://github.com/cline.png?size=120" alt="Cline" width="48" height="48" /></a><br/>
 <strong>Cline</strong><br/>
-<sub><a href="plugins/.cline-plugin/">plugin</a></sub>
+<sub><a href="../../../plugins/.cline-plugin/README">plugin</a></sub>
 </td>
 <td align="center" width="12.5%">
 <a href="https://github.com/continuedev/continue"><img src="https://github.com/continuedev.png?size=120" alt="Continue" width="48" height="48" /></a><br/>
 <strong>Continue</strong><br/>
-<sub><a href="plugins/.continue-plugin/">plugin</a></sub>
+<sub><a href="../../../plugins/.continue-plugin/README">plugin</a></sub>
 </td>
 <td align="center" width="12.5%">
 <a href="https://github.com/microsoft/vscode"><img src="https://github.com/microsoft.png?size=120" alt="VS Code" width="48" height="48" /></a><br/>
 <strong>VS Code</strong><br/>
-<sub><a href="plugins/.vscode-plugin/">plugin</a></sub>
+<sub><a href="../../../plugins/.vscode-plugin/README">plugin</a></sub>
 </td>
 <td align="center" width="12.5%">
-<a href="integrations/openclaw/"><img src="https://github.com/openclaw.png?size=120" alt="OpenClaw" width="48" height="48" /></a><br/>
+<a href="../../../integrations/openclaw/README"><img src="https://github.com/openclaw.png?size=120" alt="OpenClaw" width="48" height="48" /></a><br/>
 <strong>OpenClaw</strong><br/>
-<sub>MCP + <a href="integrations/openclaw/">plugin</a></sub>
+<sub>MCP + <a href="../../../integrations/openclaw/README">plugin</a></sub>
 </td>
 </tr>
 <tr>

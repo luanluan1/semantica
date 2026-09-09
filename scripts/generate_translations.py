@@ -77,7 +77,6 @@ REPLACEMENTS: dict[str, dict[str, str]] = {
         "## Contributors\n": "## 贡献者\n",
         "## Contributing\n": "## 贡献指南\n",
         "## Cite Us\n": "## 引用\n",
-        "*Knowledge Explorer · Context Graphs · Reasoning Engine · Decision Intelligence · Ontology Hub*\n": "*知识浏览器 · 上下文图 · 推理引擎 · 决策智能 · 本体中心*\n",
         "**[▶ Watch the full platform walkthrough](https://www.youtube.com/watch?v=QfnNZg4-dZA)**\n": "**[▶ 观看完整平台演示](https://www.youtube.com/watch?v=QfnNZg4-dZA)**\n",
         "**[⭐ Star on GitHub](https://github.com/semantica-agi/semantica)** &nbsp;·&nbsp; **[Join Discord](https://discord.gg/sV34vps5hH)**\n": "**[⭐ 在 GitHub 上 Star](https://github.com/semantica-agi/semantica)** &nbsp;·&nbsp; **[加入 Discord](https://discord.gg/sV34vps5hH)**\n",
         "**[⭐ Star on GitHub →](https://github.com/semantica-agi/semantica)**\n": "**[⭐ 在 GitHub 上 Star →](https://github.com/semantica-agi/semantica)**\n",
@@ -276,6 +275,18 @@ def generate(lang: str, readme_text: str) -> str:
     result = "".join(out)
     # Replace root-relative nav bar with language-relative paths
     result = NAV_LINE_RE.sub(NAVS[lang], result)
+    # Fix internal hrefs: translation files live in docs/i18n/<lang>/, so
+    # root-relative hrefs like href="plugins/..." must become ../../../plugins/...
+    # and must point to README (not the directory) so docs_check.py resolves them.
+    HREF_FIXES = [
+        ('href="plugins/.windsurf-plugin/"', 'href="../../../plugins/.windsurf-plugin/README"'),
+        ('href="plugins/.cline-plugin/"',    'href="../../../plugins/.cline-plugin/README"'),
+        ('href="plugins/.continue-plugin/"', 'href="../../../plugins/.continue-plugin/README"'),
+        ('href="plugins/.vscode-plugin/"',   'href="../../../plugins/.vscode-plugin/README"'),
+        ('href="integrations/openclaw/"',    'href="../../../integrations/openclaw/README"'),
+    ]
+    for old, new in HREF_FIXES:
+        result = result.replace(old, new)
     return result
 
 

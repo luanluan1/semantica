@@ -98,7 +98,8 @@ cp README.md docs/i18n/<lang-code>/README.md
 # Translate the prose in docs/i18n/<lang-code>/README.md manually.
 
 # 2. Add the language to LANGUAGES in scripts/i18n_sync.py:
-#    LANGUAGES: list[tuple[str, str]] = [
+#    # Each entry is a (code, name) pair, e.g.:
+#    LANGUAGES = [
 #        ...existing entries...
 #        ("<lang-code>", "<Language Name>"),   # ← add here
 #    ]
