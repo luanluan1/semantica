@@ -12,9 +12,9 @@
   </a>
 </div>
 
-### Graph-Native Infrastructure for Context and Accountable AI Systems
+### Infraestructura nativa de grafos para sistemas de contexto e IA responsable
 
-#### *Developer-first, knowledge infrastructure for AI, alternative to expensive enterprise platforms.*
+#### *Primero el desarrollador: infraestructura de conocimiento para IA, alternativa a las costosas plataformas empresariales.*
 
 > Ingest your enterprise data, extract what matters, build a Context Graph and knowledge graph (KG), and run graph analytics and causal reasoning over all of it, with full decision provenance baked in. Explainable, traceable, and trustworthy by design.
 
@@ -24,7 +24,7 @@
 
 **Polyglot Graph Storage &nbsp;·&nbsp; RDF & LPG Support &nbsp;·&nbsp; W3C Standards &nbsp;·&nbsp; Interoperable**
 
-#### Built for High-Stakes, Regulated Domains
+#### Construido para dominios regulados de alto riesgo
 
 [![GitHub Stars](https://img.shields.io/github/stars/semantica-agi/semantica?style=flat-square&color=FFD700&logo=github&logoColor=white&label=Stars)](https://github.com/semantica-agi/semantica) [![GitHub Forks](https://img.shields.io/github/forks/semantica-agi/semantica?style=flat-square&color=6E40C9&logo=github&logoColor=white&label=Forks)](https://github.com/semantica-agi/semantica/network/members) [![Contributors](https://img.shields.io/github/contributors/semantica-agi/semantica?style=flat-square&color=2EA043&logo=github&logoColor=white)](https://github.com/semantica-agi/semantica/graphs/contributors) [![PyPI](https://img.shields.io/pypi/v/semantica.svg?style=flat-square&color=0066CC&logo=pypi&logoColor=white)](https://pypi.org/project/semantica/) [![Total Downloads](https://static.pepy.tech/badge/semantica?style=flat-square)](https://pepy.tech/project/semantica) [![Python 3.8+](https://img.shields.io/badge/python-3.8+-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT) [![CI](https://img.shields.io/github/actions/workflow/status/semantica-agi/semantica/ci.yml?style=flat-square&label=CI)](https://github.com/semantica-agi/semantica/actions) [![Install Matrix](https://img.shields.io/github/actions/workflow/status/semantica-agi/semantica/install-matrix.yml?style=flat-square&label=pip%20install)](https://github.com/semantica-agi/semantica/actions/workflows/install-matrix.yml) [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/semantica-agi/semantica/badge?style=flat-square)](https://scorecard.dev/viewer/?uri=github.com/semantica-agi/semantica) [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/semantica-agi/semantica)
 
@@ -44,7 +44,7 @@ pip install semantica
 
 <div align="center">
 
-**Translations:** [简体中文](docs/i18n/zh-CN/README.md) · [日本語](docs/i18n/ja/README.md) · [한국어](docs/i18n/ko/README.md) · [Español](docs/i18n/es/README.md) · [Français](docs/i18n/fr/README.md)
+[English](../../../README.md) · [简体中文](../zh-CN/README.md) · [日本語](../ja/README.md) · [한국어](../ko/README.md) · [Español](./README.md) · [Français](../fr/README.md)
 
 </div>
 
@@ -60,9 +60,9 @@ pip install semantica
 />
 </a>
 
-*Knowledge Explorer · Context Graphs · Reasoning Engine · Decision Intelligence · Ontology Hub*
+*Explorador de conocimiento · Grafos de contexto · Motor de razonamiento · Inteligencia de decisiones · Hub de ontologías*
 
-**[▶ Watch the full platform walkthrough](https://www.youtube.com/watch?v=QfnNZg4-dZA)**
+**[▶ Ver el recorrido completo de la plataforma](https://www.youtube.com/watch?v=QfnNZg4-dZA)**
 
 </div>
 
@@ -85,7 +85,7 @@ Most AI agents run on embeddings, not meaning: similarity scores with no structu
 
 ---
 
-## What Semantica Gives You
+## Lo que Semantica te ofrece
 
 - **Context Graphs:** A structured, queryable graph of everything your agent knows, decides, and reasons about
 - **Decision Intelligence:** Every decision is a first-class object: traceable, searchable by precedent, and causally linked
@@ -101,7 +101,7 @@ Most AI agents run on embeddings, not meaning: similarity scores with no structu
 
 ---
 
-## Why Semantica
+## ¿Por qué Semantica?
 
 | | Vector DB + RAG | Plain LLM Memory | **Semantica** |
 | --- | --- | --- | --- |
@@ -120,7 +120,7 @@ Semantica complements your existing stack rather than replacing it. Keep your LL
 
 ---
 
-## Quick Start
+## Inicio rápido
 
 ```bash
 pip install semantica
@@ -147,7 +147,7 @@ impact    = graph.analyze_decision_impact(decision_id)    # downstream influence
 compliant = graph.check_decision_rules({"category": "vendor_selection"})  # policy gate
 ```
 
-**Verify your install in 5 seconds:**
+**Verifica tu instalación en 5 segundos:**
 
 ```bash
 semantica doctor
@@ -157,15 +157,15 @@ semantica doctor
 
 <div align="center">
 
-If Semantica solves a real problem for you, a star helps others find it.
+Si Semantica resuelve un problema real para ti, una estrella ayuda a que otros lo encuentren.
 
-**[⭐ Star on GitHub](https://github.com/semantica-agi/semantica)** &nbsp;·&nbsp; **[Join Discord](https://discord.gg/sV34vps5hH)**
+**[⭐ Dale una estrella en GitHub](https://github.com/semantica-agi/semantica)** &nbsp;·&nbsp; **[Únete a Discord](https://discord.gg/sV34vps5hH)**
 
 </div>
 
 ---
 
-## Architecture
+## Arquitectura
 
 Semantica is a real end-to-end pipeline, not a single library with a marketing name. Every stage below is a shipping module, independently importable:
 
@@ -187,7 +187,7 @@ Sources → Ingest → Parse → Normalize → Split → Extract → Conflict De
 
 ---
 
-## Decision Intelligence
+## Inteligencia de Decisiones
 
 Decision Intelligence turns every AI choice from an ephemeral inference into a permanent, auditable, queryable record. It answers *"what did your AI decide, why, and what happened next?"*: the question regulators and enterprise risk teams ask with increasing urgency.
 
@@ -247,7 +247,7 @@ insights  = graph.get_decision_insights()
 
 ---
 
-## Context Graphs
+## Grafos de Contexto
 
 A Context Graph is the structured memory layer that traditional RAG is missing. Instead of flat embeddings that answer *"what is similar?"*, a Context Graph answers *"what is connected, why, and how?"* Every entity, relationship, decision, and fact is a first-class node, queryable by graph traversal. Entities link to source documents, decisions link to evidence and consequences, facts carry full provenance, and conflicts are detected, not silently overwritten.
 
@@ -283,7 +283,7 @@ retrieved = ctx.retrieve("who approved the Acme contract?")
 
 ---
 
-## Recipe: Audit Trail for a Regulated Decision
+## Receta: Pista de auditoría para una decisión regulada
 
 One pattern built on the same Context Graph: record a causally-linked decision chain, attach provenance to every entity, and export a regulator-ready audit trail.
 
@@ -322,7 +322,7 @@ More recipes (GraphRAG pipelines, an AML rules engine, ontology-to-KG in one pas
 
 ---
 
-## Explore the Platform
+## Explora la plataforma
 
 Every module below is independently importable, with working code samples verified against the current source tree; use one or all of them.
 
@@ -349,7 +349,7 @@ Every module below is independently importable, with working code samples verifi
 
 ---
 
-## Module Reference
+## Referencia de módulos
 
 Expand any module below for its runnable example.
 
@@ -1034,7 +1034,7 @@ team = Team(agents=[researcher, analyst], mode="coordinate")
 
 ---
 
-## More Recipes
+## Más recetas
 
 The audit-trail recipe is [above](#recipe-audit-trail-for-a-regulated-decision). Here are three more common patterns.
 
@@ -1136,7 +1136,7 @@ if report.valid:
 
 ---
 
-## Features at a Glance
+## Características de un vistazo
 
 | Capability | Highlights |
 | --- | --- |
@@ -1158,7 +1158,7 @@ if report.valid:
 
 ---
 
-## Performance
+## Rendimiento
 
 Benchmarks from v0.5.0 on a 118,000-node production graph:
 
@@ -1192,7 +1192,7 @@ Start with `semantica`, verify with `doctor`, build a graph, and explore the com
 
 ---
 
-## Integrations
+## Integraciones
 
 Native plugin bundles for Claude Code, Cursor, Codex, Windsurf, Cline, Continue, VS Code, and OpenClaw; a full-featured MCP server for any MCP-compatible client; a comprehensive REST API; and first-class Agno, CrewAI, and LangChain support for agentic frameworks. Every major LLM provider is already supported via `semantica.llms` and LiteLLM: OpenAI, Anthropic, Gemini, Mistral, Llama, Groq, Cohere, Azure, Bedrock, Ollama, DeepSeek, HuggingFace, and more.
 
@@ -1296,7 +1296,7 @@ MCP setup takes 30 seconds — see [MCP Server](#mcp-server) below.
 </tr>
 </table>
 
-### Agentic Frameworks
+### Frameworks de agentes
 
 <table>
 <tr>
@@ -1378,7 +1378,7 @@ MCP setup takes 30 seconds — see [MCP Server](#mcp-server) below.
 
 </details>
 
-### MCP Server
+### Servidor MCP
 
 Connect any MCP-compatible client (Claude Desktop, Windsurf, Cline, VS Code) in 30 seconds:
 
@@ -1416,7 +1416,7 @@ semantica-mcp
 | `update_node` | Merge properties onto a node |
 | `delete_node` | Archive (soft-delete) a node |
 
-### REST API
+### API REST
 
 ```bash
 # Start the backend
@@ -1436,7 +1436,7 @@ curl "http://localhost:8000/api/graph/node/acme_corp/neighbors?depth=2"
 
 **REST endpoints span:** `enrich` (extract) · `graph` · `decisions` · `reasoning` · `provenance` · `ontology` · `embeddings` · `search` · `export` · `pipeline` · `temporal` · `deduplication`
 
-### Plugin Bundles
+### Bundles de plugins
 
 **Domain skills:** `extract` · `ingest` · `query` · `ontology` · `validate` · `deduplicate` · `embed` · `reason` · `decision` · `causal` · `temporal` · `provenance` · `policy` · `explain` · `export` · `change` · `visualize`
 
@@ -1446,7 +1446,7 @@ Bundles for Claude Code, Cursor, Codex, Windsurf, Cline, Continue, VS Code, and 
 
 ---
 
-## Knowledge Explorer
+## Explorador de conocimiento
 
 A browser-based graph workbench. Pan and zoom live graphs, scrub the timeline, review every decision's causal chain, resolve duplicates, and author your ontology visually. Built on React 19 + Sigma.js.
 
@@ -1486,7 +1486,7 @@ app = create_app(session=GraphSession(graph), agent_memory=memory)
 The Memories workspace is shown only when `agent_memory` is provided. Apply
 updates the supplied runtime object; it does not add disk persistence.
 
-## What's New in v0.7.0
+## Novedades en v0.7.0
 
 **Slim core dependencies: lightweight base install with granular optional extras** — `pip install semantica` now installs only 22 essential core dependencies, moving heavy packages into dedicated optional extras:
 - **Dramatically lighter and faster installation**: Core installation no longer pulls heavy machine learning or visualization packages by default.
@@ -1496,7 +1496,7 @@ updates the supplied runtime object; it does not add disk persistence.
 
 ---
 
-## What's New in v0.6.8
+## Novedades en v0.6.8
 
 **Every release from here on is cryptographically signed** — the build now runs SLSA build-provenance attestation plus Sigstore signing, and `.sigstore.json` bundles ship alongside the wheel/sdist on every GitHub Release, closing the OpenSSF Scorecard Signed-Releases gap. Beyond that, this is a large fix-and-hardening release plus a batch of vector-store and LLM-provider additions:
 
@@ -1513,7 +1513,7 @@ Also fixes 35 correctness bugs (Python 3.9 install breakage, FAISS save/load met
 
 ---
 
-## Built for High-Stakes Domains
+## Construido para dominios de alto riesgo
 
 Semantica is designed for environments where AI outputs must be explainable, auditable, and defensible, and where the data itself can't leave your infrastructure. Self-hostable with zero vendor lock-in, it's built as much for organizations handling confidential or classified data as for regulated industries chasing an audit trail:
 
@@ -1529,7 +1529,7 @@ Semantica is designed for environments where AI outputs must be explainable, aud
 
 ---
 
-## Installation
+## Instalación
 
 ```bash
 pip install semantica             # lightweight core (22 essential dependencies)
@@ -1578,7 +1578,7 @@ git clone https://github.com/semantica-agi/semantica.git
 cd semantica && pip install -e ".[dev]" && pytest tests/
 ```
 
-### CI & Deployment
+### CI y despliegue
 
 Wiring `semantica` into your own CI is a two-minute job. On GitHub Actions, use the reusable composite action:
 
@@ -1594,7 +1594,7 @@ Ready-made deployment configs for AWS, GCP, Azure, Fly.io, Railway, Render, Kube
 
 ---
 
-## Enterprise
+## Empresas
 
 On-premises deployment · Private cloud · Custom domain implementations · SLA-backed support · Professional services for regulated industries (finance, healthcare, legal, government).
 
@@ -1602,7 +1602,7 @@ On-premises deployment · Private cloud · Custom domain implementations · SLA-
 
 ---
 
-## Community & Support
+## Comunidad y soporte
 
 | | |
 | --- | --- |
@@ -1615,7 +1615,7 @@ On-premises deployment · Private cloud · Custom domain implementations · SLA-
 
 ---
 
-## Star History
+## Historial de estrellas
 
 <a href="https://star-history.dera.page/#semantica-agi/semantica&amp;type=date&amp;legend=top-left">
  <picture>
@@ -1627,7 +1627,7 @@ On-premises deployment · Private cloud · Custom domain implementations · SLA-
 
 ---
 
-## Contributors
+## Colaboradores
 
 <div align="center">
 
@@ -1637,7 +1637,7 @@ On-premises deployment · Private cloud · Custom domain implementations · SLA-
 
 ---
 
-## Contributing
+## Contribuir
 
 All contributions are welcome: bug fixes, features, tests, and documentation.
 
@@ -1650,7 +1650,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for full guidelines.
 
 ---
 
-## Cite Us
+## Cítanos
 
 If you use Semantica in your research or production systems, please cite it as:
 
@@ -1669,7 +1669,7 @@ All citation formats (APA, MLA, Chicago, IEEE) live on the [Citation](https://do
 
 <div align="center">
 
-MIT License · Built by [Semantica](https://github.com/semantica-agi)
+Licencia MIT · Construido por [Semantica](https://github.com/semantica-agi)
 
 [GitHub](https://github.com/semantica-agi/semantica) &nbsp;·&nbsp;
 [Discord](https://discord.gg/sV34vps5hH) &nbsp;·&nbsp;
@@ -1678,10 +1678,10 @@ MIT License · Built by [Semantica](https://github.com/semantica-agi)
 [Docs](https://docs.getsemantica.ai/) &nbsp;·&nbsp;
 [PyPI](https://pypi.org/project/semantica/)
 
-If this project helps you build better AI, a star means a lot.
+Si este proyecto te ayuda a construir mejor IA, una estrella significa mucho.
 
-**[⭐ Star on GitHub →](https://github.com/semantica-agi/semantica)**
+**[⭐ Dale una estrella en GitHub →](https://github.com/semantica-agi/semantica)**
 
-**Translations (repository-managed):** [简体中文](docs/i18n/zh-CN/README.md) · [日本語](docs/i18n/ja/README.md) · [한국어](docs/i18n/ko/README.md) · [Español](docs/i18n/es/README.md) · [Français](docs/i18n/fr/README.md)
+[English](../../../README.md) · [简体中文](../zh-CN/README.md) · [日本語](../ja/README.md) · [한국어](../ko/README.md) · [Español](./README.md) · [Français](../fr/README.md)
 
 </div>

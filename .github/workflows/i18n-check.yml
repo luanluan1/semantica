@@ -1,0 +1,37 @@
+name: README i18n Check
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'README.md'
+      - 'docs/i18n/**'
+      - 'scripts/i18n_sync.py'
+
+permissions:
+  contents: read
+
+jobs:
+  i18n-check:
+    name: Check translation sync
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: '3.11'
+
+      - name: Verify translations are synchronised with README.md
+        run: python scripts/i18n_sync.py --check
+        # Exits 1 when:
+        #   - A translation file (docs/i18n/<lang>/README.md) is missing.
+        #   - README.md has changed since the last accepted sync
+        #     (a section hash no longer matches docs/i18n/.section-hashes).
+        #   - Any translation file still contains <!-- NEEDS-TRANSLATION --> markers.
+        #
+        # To fix a stale-translation failure locally:
+        #   python scripts/i18n_sync.py --propagate   # inject changed English sections
+        #   # translate the marked sections in each docs/i18n/<lang>/README.md
+        #   python scripts/i18n_sync.py --accept      # record the new baseline
+        #   git add docs/i18n && git commit -m "docs(i18n): sync translations"
